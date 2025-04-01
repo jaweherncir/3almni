@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/sea"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/titre1"
+            android:layout_width="252dp"
+            android:layout_height="105dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ex2" />
+
+        <ImageView
+            android:id="@+id/titre2"
+            android:layout_width="363dp"
+            android:layout_height="112dp"
+            android:layout_below="@id/titre1"
+            android:layout_marginTop="-40dp"
+            android:src="@drawable/ex22" />
+
+        <ImageView
+            android:id="@+id/boet"
+            android:layout_width="357dp"
+            android:layout_height="408dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="295dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/bateau" />
+
+        <ImageView
+            android:id="@+id/port"
+            android:layout_width="100dp"
+            android:layout_height="500dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="100dp"
+            android:layout_marginBottom="-70dp"
+            android:src="@drawable/door" />
+
+        <ImageView
+            android:id="@+id/sandouk1"
+            android:layout_width="62dp"
+            android:layout_height="38dp"
+            android:layout_below="@id/fish9"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="-500dp"
+            android:src="@drawable/sandouk1"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/sandouk2"
+            android:layout_width="62dp"
+            android:layout_height="38dp"
+            android:layout_below="@id/fish9"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="-500dp"
+            android:src="@drawable/sandouk2"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/sandouk3"
+            android:layout_width="62dp"
+            android:layout_height="38dp"
+            android:layout_below="@id/fish9"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="-500dp"
+            android:src="@drawable/sandouk3"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/sandouk4"
+            android:layout_width="62dp"
+            android:layout_height="38dp"
+            android:layout_below="@id/fish9"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="-13dp"
+            android:layout_marginTop="-500dp"
+            android:src="@drawable/sandouk4"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/fish12"
+            android:layout_width="126dp"
+            android:layout_height="104dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="136dp"
+            android:src="@drawable/fish12" />
+
+        <ImageView
+            android:id="@+id/fish121"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="264dp"
+            android:layout_marginBottom="479dp"
+            android:src="@drawable/fish121"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/fish20"
+            android:layout_width="126dp"
+            android:layout_height="104dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="18dp"
+            android:layout_marginBottom="272dp"
+            android:src="@drawable/fish20" />
+
+        <ImageView
+            android:id="@+id/fish201"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="361dp"
+            android:layout_marginBottom="479dp"
+            android:src="@drawable/fish201"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/fish9"
+            android:layout_width="85dp"
+            android:layout_height="61dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="281dp"
+            android:layout_marginBottom="208dp"
+            android:src="@drawable/fish9" />
+
+        <ImageView
+            android:id="@+id/fish91"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="222dp"
+            android:layout_marginBottom="479dp"
+            android:src="@drawable/fish91"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/fish15"
+            android:layout_width="111dp"
+            android:layout_height="66dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="278dp"
+            android:layout_marginBottom="79dp"
+            android:src="@drawable/fish15" />
+
+        <ImageView
+            android:id="@+id/fish151"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="316dp"
+            android:layout_marginBottom="479dp"
+            android:src="@drawable/fish151"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/keygame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/keygame"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/next"
+            android:layout_width="138dp"
+            android:layout_height="91dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/next" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
