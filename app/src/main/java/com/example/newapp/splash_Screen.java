@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 public class splash_Screen extends AppCompatActivity {
 
     private ImageView cloud, rock, map;
@@ -66,9 +67,11 @@ public class splash_Screen extends AppCompatActivity {
                 titre2.setVisibility(View.VISIBLE);  // Make titre2 visible when audio3 starts
                 zoomInOutAnimation(map);  // Start zoom-in/out animation on map
 
-                // Once audio3 finishes, release the media player
+                // Once audio3 finishes, release the media player and enable the map click listener
                 mediaPlayer3.setOnCompletionListener(mp3 -> {
                     mp3.release();
+                    // Enable map click listener after audio3 finishes
+                    map.setClickable(true);
                 });
             });
         });
@@ -79,27 +82,25 @@ public class splash_Screen extends AppCompatActivity {
             fadeInAnimation(titre1);
         }, 2000); // Delay 2 seconds before starting animations
 
-        // Set click listener for the map ImageView
-        map.setOnClickListener(v -> {
-            // Stop the audio when transitioning to MainActivity
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-            }
-            if (mediaPlayer2 != null) {
-                mediaPlayer2.stop();
-                mediaPlayer2.release();
-            }
-            if (mediaPlayer3 != null) {
-                mediaPlayer3.stop();
-                mediaPlayer3.release();
-            }
+        // Set initial click listener to null (map should not be clickable initially)
+        map.setClickable(false);
 
-            // Intent to start MainActivity
-            Intent intent = new Intent(splash_Screen.this, MainActivity.class);
+        // Set click listener for the map ImageView to go to SecondActivity
+        map.setOnClickListener(v -> {
+            // Release all MediaPlayer instances before navigating to another activity
+            releaseMediaPlayer(mediaPlayer);
+            releaseMediaPlayer(mediaPlayer2);
+            releaseMediaPlayer(mediaPlayer3);
+
+            // Navigate to SecondActivity
+            Intent intent = new Intent(splash_Screen.this, secondpage.class);
             startActivity(intent);
-            finish(); // Optionally, call finish() to prevent going back to the splash screen
+
+            // Optionally, you can add this to finish the current activity, so the user can't return to the splash screen
+            finish();
         });
+
+
     }
 
     private void fadeInAnimation(View view) {
@@ -159,36 +160,38 @@ public class splash_Screen extends AppCompatActivity {
         zoomInY.start();
     }
 
+    private void releaseMediaPlayer(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null) {
+            try {
+                // Check if the media player is playing before stopping
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
+            } catch (IllegalStateException e) {
+                // Handle the exception if the mediaPlayer is not in a valid state
+                e.printStackTrace();  // Optionally log this for debugging
+            } finally {
+                // Release the media player regardless of its state
+                mediaPlayer.release();
+            }
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         // Stop and release the media player when the activity is paused
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-        }
-        if (mediaPlayer2 != null) {
-            mediaPlayer2.stop();
-            mediaPlayer2.release();
-        }
-        if (mediaPlayer3 != null) {
-            mediaPlayer3.stop();
-            mediaPlayer3.release();
-        }
+        releaseMediaPlayer(mediaPlayer);
+        releaseMediaPlayer(mediaPlayer2);
+        releaseMediaPlayer(mediaPlayer3);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // Release the media player when the activity is destroyed
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
-        if (mediaPlayer2 != null) {
-            mediaPlayer2.release();
-        }
-        if (mediaPlayer3 != null) {
-            mediaPlayer3.release();
-        }
+        releaseMediaPlayer(mediaPlayer);
+        releaseMediaPlayer(mediaPlayer2);
+        releaseMediaPlayer(mediaPlayer3);
     }
 }

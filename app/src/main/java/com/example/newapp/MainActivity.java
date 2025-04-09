@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fish91, fish121, fish151, fish201;
     private boolean[] sandoukValidated = new boolean[4];
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
