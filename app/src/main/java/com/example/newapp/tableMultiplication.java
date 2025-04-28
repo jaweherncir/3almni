@@ -1,8 +1,10 @@
 package com.example.newapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,15 +12,22 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Random;
 
 public class tableMultiplication extends AppCompatActivity {
 
-    private final int SIZE = 10; // 0 to 9
+    private final int SIZE = 10;
     private View[][] cells = new View[SIZE][SIZE];
     private GridLayout gridLayout;
     private Button btnCheck, btnRegenerate;
+    private ImageView boulR, boulV, feuv, feur, next;
+    private MediaPlayer mediaPlayer8, mediaPlayer9;
+    private boolean audioFinished = false; // Pour activer les boutons après audio9
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +38,57 @@ public class tableMultiplication extends AppCompatActivity {
         btnCheck = findViewById(R.id.btnCheck);
         btnRegenerate = findViewById(R.id.btnRegenerate);
 
+        boulR = findViewById(R.id.boulR);
+        boulV = findViewById(R.id.boulV);
+        feuv = findViewById(R.id.feuv);
+        feur = findViewById(R.id.feur);
+        next = findViewById(R.id.next); // ⬅️ Assurez-vous que l'ID existe dans le layout
+
+        // Initialement invisibles
+        boulR.setVisibility(View.INVISIBLE);
+        boulV.setVisibility(View.INVISIBLE);
+        feuv.setVisibility(View.INVISIBLE);
+        feur.setVisibility(View.INVISIBLE);
+        btnCheck.setVisibility(View.INVISIBLE);
+        btnRegenerate.setVisibility(View.INVISIBLE);
+        next.setVisibility(View.INVISIBLE);
+
         generateMultiplicationTable();
 
-        btnCheck.setOnClickListener(v -> {
-            checkUserAnswers();
+        next.setOnClickListener(v -> {
+            Intent intent = new Intent(tableMultiplication.this, LastStepExercice1.class); // Replace with your next activity
+            startActivity(intent);
         });
+        // Jouer audio8
+        mediaPlayer8 = MediaPlayer.create(this, R.raw.audio8);
+        mediaPlayer8.setOnCompletionListener(mp -> {
+            feuv.setVisibility(View.VISIBLE);
+            feur.setVisibility(View.VISIBLE);
+
+            // Jouer audio9
+            mediaPlayer9 = MediaPlayer.create(this, R.raw.audio9);
+            mediaPlayer9.setOnCompletionListener(mp2 -> {
+                audioFinished = true;
+                btnCheck.setVisibility(View.VISIBLE);
+                btnRegenerate.setVisibility(View.VISIBLE);
+            });
+            mediaPlayer9.start();
+        });
+
+        mediaPlayer8.start();
+
+        btnCheck.setOnClickListener(v -> checkUserAnswers());
 
         btnRegenerate.setOnClickListener(v -> {
             generateMultiplicationTable();
+            boulR.setVisibility(View.INVISIBLE);
+            boulV.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.INVISIBLE);
+
+
         });
     }
+
 
     private void generateMultiplicationTable() {
         Random random = new Random();
@@ -55,35 +105,34 @@ public class tableMultiplication extends AppCompatActivity {
                     cell.setText("*");
                     cell.setGravity(Gravity.CENTER);
                     cell.setTextSize(14);
-                    cell.setBackgroundColor(Color.TRANSPARENT);  // Fond transparent
-                    setCellBorder(cell);  // Ajouter une bordure noire
+                    cell.setBackgroundColor(Color.TRANSPARENT);
+                    setCellBorder(cell);
                     view = cell;
                 } else if (row == 0) {
                     TextView cell = new TextView(this);
                     cell.setText(String.valueOf(col));
                     cell.setGravity(Gravity.CENTER);
                     cell.setTextSize(14);
-                    cell.setBackgroundColor(Color.TRANSPARENT);  // Fond transparent
-                    setCellBorder(cell);  // Ajouter une bordure noire
+                    cell.setBackgroundColor(Color.TRANSPARENT);
+                    setCellBorder(cell);
                     view = cell;
                 } else if (col == 0) {
                     TextView cell = new TextView(this);
                     cell.setText(String.valueOf(row));
                     cell.setGravity(Gravity.CENTER);
                     cell.setTextSize(14);
-                    cell.setBackgroundColor(Color.TRANSPARENT);  // Fond transparent
-                    setCellBorder(cell);  // Ajouter une bordure noire
+                    cell.setBackgroundColor(Color.TRANSPARENT);
+                    setCellBorder(cell);
                     view = cell;
                 } else {
                     int correctValue = row * col;
-
                     if (random.nextInt(100) < 20) {
                         TextView cell = new TextView(this);
                         cell.setText(String.valueOf(correctValue));
                         cell.setGravity(Gravity.CENTER);
                         cell.setTextSize(14);
-                        cell.setBackgroundColor(Color.TRANSPARENT);  // Fond transparent
-                        setCellBorder(cell);  // Ajouter une bordure noire
+                        cell.setBackgroundColor(Color.TRANSPARENT);
+                        setCellBorder(cell);
                         view = cell;
                     } else {
                         EditText cell = new EditText(this);
@@ -91,8 +140,8 @@ public class tableMultiplication extends AppCompatActivity {
                         cell.setEms(2);
                         cell.setTextSize(14);
                         cell.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-                        cell.setBackgroundColor(Color.TRANSPARENT);  // Fond transparent
-                        setCellBorder(cell);  // Ajouter une bordure noire
+                        cell.setBackgroundColor(Color.TRANSPARENT);
+                        setCellBorder(cell);
                         view = cell;
                     }
                 }
@@ -109,7 +158,6 @@ public class tableMultiplication extends AppCompatActivity {
         }
     }
 
-    // Méthode pour ajouter une bordure noire à chaque cellule
     private void setCellBorder(View view) {
         ShapeDrawable border = new ShapeDrawable(new RectShape());
         border.getPaint().setColor(Color.BLACK);
@@ -131,19 +179,35 @@ public class tableMultiplication extends AppCompatActivity {
                     try {
                         int val = Integer.parseInt(userInput);
                         if (val != correct) {
-                            cell.setBackgroundColor(Color.parseColor("#FF0000")); // rouge clair
+                            cell.setBackgroundColor(Color.parseColor("#FF0000"));
+                            boulR.setVisibility(View.VISIBLE);
+                            boulV.setVisibility(View.INVISIBLE);
                             allCorrect = false;
                         } else {
-                            cell.setBackgroundColor(Color.parseColor("#008000")); // vert clair
+                            cell.setBackgroundColor(Color.parseColor("#008000"));
                         }
                     } catch (NumberFormatException e) {
-                        cell.setBackgroundColor(Color.parseColor("#FF0000")); // rouge clair
                         allCorrect = false;
                     }
                 }
             }
         }
 
+        if (allCorrect) {
+            boulR.setVisibility(View.INVISIBLE);
+            boulV.setVisibility(View.VISIBLE);
+            next.setVisibility(View.VISIBLE); // Montrer le bouton "next"
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer8 != null) {
+            mediaPlayer8.release();
+        }
+        if (mediaPlayer9 != null) {
+            mediaPlayer9.release();
+        }
     }
 }

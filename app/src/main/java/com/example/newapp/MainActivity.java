@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView fish9, fish12, fish15, fish20, sandouk1, sandouk2, sandouk3, sandouk4, keygame, next;
     private ImageView fish91, fish121, fish151, fish201;
     private boolean[] sandoukValidated = new boolean[4];
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setOnCompletionListener(mp -> {
                 sandouk1.setVisibility(View.VISIBLE);
                 animateFish(fish9);
+                animateFish(fish12);
+                animateFish(fish15);
+                animateFish(fish20);
                 setupDraggableFishes();
             });
         }
@@ -74,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void animateFish(ImageView fish) {
-        ObjectAnimator moveX = ObjectAnimator.ofFloat(fish, "translationX", 0f, 300f);
-        ObjectAnimator moveY = ObjectAnimator.ofFloat(fish, "translationY", 0f, 50f);
+        ObjectAnimator moveX = ObjectAnimator.ofFloat(fish, "translationX", 0f, 400f);
+        ObjectAnimator moveY = ObjectAnimator.ofFloat(fish, "translationY", 0f, 100f);
 
-        moveX.setDuration(3000);
+        moveX.setDuration(5000);
         moveX.setRepeatCount(ObjectAnimator.INFINITE);
         moveX.setRepeatMode(ObjectAnimator.REVERSE);
 
@@ -98,8 +101,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void makeDraggable(ImageView fish, ImageView nextFish, View correctSandouk, View nextSandouk, ImageView nextVisibleFish, int sandoukIndex) {
+    private void makeDraggable(ImageView fish, ImageView fishSuccessImage, View targetBox, View nextBox, ImageView nextFish, int index) {
         fish.setOnTouchListener((v, event) -> {
+
+            if (index > 0 && !sandoukValidated[index - 1]) {
+                Toast.makeText(this, "❌ المكان غير صحيح!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     v.setTag(new float[]{v.getX() - event.getRawX(), v.getY() - event.getRawY()});
@@ -110,30 +119,29 @@ public class MainActivity extends AppCompatActivity {
                     v.setY(event.getRawY() + d[1]);
                     break;
                 case MotionEvent.ACTION_UP:
-                    if (isViewOverlapping(v, correctSandouk)) {
+                    if (isViewOverlapping(v, targetBox)) {
                         v.setVisibility(View.INVISIBLE);
+                        if (fishSuccessImage != null) fishSuccessImage.setVisibility(View.VISIBLE);
+
+                        Toast.makeText(this, "✅ السمكة في مكانها الصحيح!", Toast.LENGTH_SHORT).show();
+                        sandoukValidated[index] = true;
+
+                        if (nextBox != null) nextBox.setVisibility(View.VISIBLE);
                         if (nextFish != null) nextFish.setVisibility(View.VISIBLE);
-                        Toast.makeText(MainActivity.this, "🐟 السمكة في مكانها الصحيح!", Toast.LENGTH_SHORT).show();
 
-                        sandoukValidated[sandoukIndex] = true;
-
-                        if (nextSandouk != null) {
-                            nextSandouk.setVisibility(View.VISIBLE);
-                            if (nextVisibleFish != null) nextVisibleFish.setVisibility(View.VISIBLE);
-                        }
-
-                        if (nextSandouk == keygame) {
+                        if (nextBox == keygame) {
                             keygame.setVisibility(View.VISIBLE);
-                            next.setVisibility(View.VISIBLE); // Afficher le bouton Next
-                            Toast.makeText(MainActivity.this, "🔑 لقد وجدت المفتاح!", Toast.LENGTH_LONG).show();
+                            next.setVisibility(View.VISIBLE);
+                            Toast.makeText(this, "🔑 لقد وجدت المفتاح!", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(MainActivity.this, "❌ المكان غير صحيح!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "❌ المكان غير صحيح!", Toast.LENGTH_SHORT).show();
                         v.setX(0);
                         v.setY(0);
                     }
                     break;
             }
+
             return true;
         });
     }

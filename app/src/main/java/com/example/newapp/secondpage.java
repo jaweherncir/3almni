@@ -92,7 +92,7 @@ public class secondpage extends AppCompatActivity {
                         if (beb2 != null) beb2.setVisibility(ImageView.VISIBLE);
                         if (said != null) said.setVisibility(ImageView.VISIBLE);
                     }
-                }, 8000); // Delay of 6 seconds
+                }, 9000); // Delay of 6 seconds
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -117,7 +117,7 @@ public class secondpage extends AppCompatActivity {
                                 titre2.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent intent = new Intent(secondpage.this, MainActivity.class);
+                                        Intent intent = new Intent(secondpage.this, exercice1 .class);
                                         startActivity(intent);
                                         finish(); // Optional: close current activity
                                     }
